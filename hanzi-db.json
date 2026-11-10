@@ -1,0 +1,1209 @@
+{
+ "meta": {
+  "total": 146,
+  "sets": [
+   {
+    "name": "天文太空",
+    "count": 22
+   },
+   {
+    "name": "天气自然",
+    "count": 22
+   },
+   {
+    "name": "数字",
+    "count": 18
+   },
+   {
+    "name": "人物身体",
+    "count": 20
+   },
+   {
+    "name": "动物",
+    "count": 17
+   },
+   {
+    "name": "食物",
+    "count": 16
+   },
+   {
+    "name": "方位",
+    "count": 15
+   },
+   {
+    "name": "时间",
+    "count": 18
+   }
+  ]
+ },
+ "chars": {
+  "天": {
+   "char": "天",
+   "pinyin": "tiān",
+   "meaning": "sky / heaven",
+   "set": "天文太空",
+   "unicode": "U+5929",
+   "strokes": 4
+  },
+  "空": {
+   "char": "空",
+   "pinyin": "kōng",
+   "meaning": "empty / sky",
+   "set": "天文太空",
+   "unicode": "U+7A7A",
+   "strokes": 8
+  },
+  "宇": {
+   "char": "宇",
+   "pinyin": "yǔ",
+   "meaning": "space",
+   "set": "天文太空",
+   "unicode": "U+5B87",
+   "strokes": 6
+  },
+  "宙": {
+   "char": "宙",
+   "pinyin": "zhòu",
+   "meaning": "universe",
+   "set": "天文太空",
+   "unicode": "U+5B99",
+   "strokes": 8
+  },
+  "辰": {
+   "char": "辰",
+   "pinyin": "chén",
+   "meaning": "stars / time",
+   "set": "天文太空",
+   "unicode": "U+8FB0",
+   "strokes": 7
+  },
+  "球": {
+   "char": "球",
+   "pinyin": "qiú",
+   "meaning": "sphere / ball",
+   "set": "天文太空",
+   "unicode": "U+7403",
+   "strokes": 11
+  },
+  "轨": {
+   "char": "轨",
+   "pinyin": "guǐ",
+   "meaning": "orbit / track",
+   "set": "天文太空",
+   "unicode": "U+8F68",
+   "strokes": 6
+  },
+  "航": {
+   "char": "航",
+   "pinyin": "háng",
+   "meaning": "navigate / sail",
+   "set": "天文太空",
+   "unicode": "U+822A",
+   "strokes": 10
+  },
+  "箭": {
+   "char": "箭",
+   "pinyin": "jiàn",
+   "meaning": "arrow",
+   "set": "天文太空",
+   "unicode": "U+7BAD",
+   "strokes": 15
+  },
+  "卫": {
+   "char": "卫",
+   "pinyin": "wèi",
+   "meaning": "guard / satellite",
+   "set": "天文太空",
+   "unicode": "U+536B",
+   "strokes": 3
+  },
+  "彗": {
+   "char": "彗",
+   "pinyin": "huì",
+   "meaning": "comet",
+   "set": "天文太空",
+   "unicode": "U+5F57",
+   "strokes": 11
+  },
+  "冥": {
+   "char": "冥",
+   "pinyin": "míng",
+   "meaning": "dark / deep",
+   "set": "天文太空",
+   "unicode": "U+51A5",
+   "strokes": 10
+  },
+  "银": {
+   "char": "银",
+   "pinyin": "yín",
+   "meaning": "silver",
+   "set": "天文太空",
+   "unicode": "U+94F6",
+   "strokes": 11
+  },
+  "河": {
+   "char": "河",
+   "pinyin": "hé",
+   "meaning": "river",
+   "set": "天文太空",
+   "unicode": "U+6CB3",
+   "strokes": 8
+  },
+  "斗": {
+   "char": "斗",
+   "pinyin": "dǒu",
+   "meaning": "dipper / fight",
+   "set": "天文太空",
+   "unicode": "U+6597",
+   "strokes": 4
+  },
+  "极": {
+   "char": "极",
+   "pinyin": "jí",
+   "meaning": "pole / extreme",
+   "set": "天文太空",
+   "unicode": "U+6781",
+   "strokes": 7
+  },
+  "日": {
+   "char": "日",
+   "pinyin": "rì",
+   "meaning": "day",
+   "set": "时间",
+   "unicode": "U+65E5",
+   "strokes": 4
+  },
+  "月": {
+   "char": "月",
+   "pinyin": "yuè",
+   "meaning": "month",
+   "set": "时间",
+   "unicode": "U+6708",
+   "strokes": 4
+  },
+  "星": {
+   "char": "星",
+   "pinyin": "xīng",
+   "meaning": "star",
+   "set": "天文太空",
+   "unicode": "U+661F",
+   "strokes": 9
+  },
+  "光": {
+   "char": "光",
+   "pinyin": "guāng",
+   "meaning": "light",
+   "set": "天文太空",
+   "unicode": "U+5149",
+   "strokes": 6
+  },
+  "云": {
+   "char": "云",
+   "pinyin": "yún",
+   "meaning": "cloud",
+   "set": "天文太空",
+   "unicode": "U+4E91",
+   "strokes": 4
+  },
+  "气": {
+   "char": "气",
+   "pinyin": "qì",
+   "meaning": "air / gas",
+   "set": "天文太空",
+   "unicode": "U+6C14",
+   "strokes": 4
+  },
+  "风": {
+   "char": "风",
+   "pinyin": "fēng",
+   "meaning": "wind",
+   "set": "天气自然",
+   "unicode": "U+98CE",
+   "strokes": 4
+  },
+  "雨": {
+   "char": "雨",
+   "pinyin": "yǔ",
+   "meaning": "rain",
+   "set": "天气自然",
+   "unicode": "U+96E8",
+   "strokes": 8
+  },
+  "雪": {
+   "char": "雪",
+   "pinyin": "xuě",
+   "meaning": "snow",
+   "set": "天气自然",
+   "unicode": "U+96EA",
+   "strokes": 11
+  },
+  "雷": {
+   "char": "雷",
+   "pinyin": "léi",
+   "meaning": "thunder",
+   "set": "天气自然",
+   "unicode": "U+96F7",
+   "strokes": 13
+  },
+  "电": {
+   "char": "电",
+   "pinyin": "diàn",
+   "meaning": "lightning",
+   "set": "天气自然",
+   "unicode": "U+7535",
+   "strokes": 5
+  },
+  "霜": {
+   "char": "霜",
+   "pinyin": "shuāng",
+   "meaning": "frost",
+   "set": "天气自然",
+   "unicode": "U+971C",
+   "strokes": 17
+  },
+  "露": {
+   "char": "露",
+   "pinyin": "lù",
+   "meaning": "dew",
+   "set": "天气自然",
+   "unicode": "U+9732",
+   "strokes": 21
+  },
+  "虹": {
+   "char": "虹",
+   "pinyin": "hóng",
+   "meaning": "rainbow",
+   "set": "天气自然",
+   "unicode": "U+8679",
+   "strokes": 9
+  },
+  "雾": {
+   "char": "雾",
+   "pinyin": "wù",
+   "meaning": "fog",
+   "set": "天气自然",
+   "unicode": "U+96FE",
+   "strokes": 13
+  },
+  "山": {
+   "char": "山",
+   "pinyin": "shān",
+   "meaning": "mountain",
+   "set": "天气自然",
+   "unicode": "U+5C71",
+   "strokes": 3
+  },
+  "水": {
+   "char": "水",
+   "pinyin": "shuǐ",
+   "meaning": "water",
+   "set": "天气自然",
+   "unicode": "U+6C34",
+   "strokes": 4
+  },
+  "火": {
+   "char": "火",
+   "pinyin": "huǒ",
+   "meaning": "fire",
+   "set": "天气自然",
+   "unicode": "U+706B",
+   "strokes": 4
+  },
+  "田": {
+   "char": "田",
+   "pinyin": "tián",
+   "meaning": "field",
+   "set": "天气自然",
+   "unicode": "U+7530",
+   "strokes": 5
+  },
+  "禾": {
+   "char": "禾",
+   "pinyin": "hé",
+   "meaning": "grain",
+   "set": "天气自然",
+   "unicode": "U+79BE",
+   "strokes": 5
+  },
+  "林": {
+   "char": "林",
+   "pinyin": "lín",
+   "meaning": "forest",
+   "set": "天气自然",
+   "unicode": "U+6797",
+   "strokes": 8
+  },
+  "石": {
+   "char": "石",
+   "pinyin": "shí",
+   "meaning": "stone",
+   "set": "天气自然",
+   "unicode": "U+77F3",
+   "strokes": 5
+  },
+  "沙": {
+   "char": "沙",
+   "pinyin": "shā",
+   "meaning": "sand",
+   "set": "天气自然",
+   "unicode": "U+6C99",
+   "strokes": 7
+  },
+  "浪": {
+   "char": "浪",
+   "pinyin": "làng",
+   "meaning": "wave",
+   "set": "天气自然",
+   "unicode": "U+6D6A",
+   "strokes": 10
+  },
+  "海": {
+   "char": "海",
+   "pinyin": "hǎi",
+   "meaning": "sea",
+   "set": "天气自然",
+   "unicode": "U+6D77",
+   "strokes": 10
+  },
+  "潮": {
+   "char": "潮",
+   "pinyin": "cháo",
+   "meaning": "tide",
+   "set": "天气自然",
+   "unicode": "U+6F6E",
+   "strokes": 15
+  },
+  "泉": {
+   "char": "泉",
+   "pinyin": "quán",
+   "meaning": "spring",
+   "set": "天气自然",
+   "unicode": "U+6CC9",
+   "strokes": 9
+  },
+  "岩": {
+   "char": "岩",
+   "pinyin": "yán",
+   "meaning": "rock",
+   "set": "天气自然",
+   "unicode": "U+5CA9",
+   "strokes": 8
+  },
+  "一": {
+   "char": "一",
+   "pinyin": "yī",
+   "meaning": "one",
+   "set": "数字",
+   "unicode": "U+4E00",
+   "strokes": 1
+  },
+  "二": {
+   "char": "二",
+   "pinyin": "èr",
+   "meaning": "two",
+   "set": "数字",
+   "unicode": "U+4E8C",
+   "strokes": 2
+  },
+  "三": {
+   "char": "三",
+   "pinyin": "sān",
+   "meaning": "three",
+   "set": "数字",
+   "unicode": "U+4E09",
+   "strokes": 3
+  },
+  "四": {
+   "char": "四",
+   "pinyin": "sì",
+   "meaning": "four",
+   "set": "数字",
+   "unicode": "U+56DB",
+   "strokes": 5
+  },
+  "五": {
+   "char": "五",
+   "pinyin": "wǔ",
+   "meaning": "five",
+   "set": "数字",
+   "unicode": "U+4E94",
+   "strokes": 4
+  },
+  "六": {
+   "char": "六",
+   "pinyin": "liù",
+   "meaning": "six",
+   "set": "数字",
+   "unicode": "U+516D",
+   "strokes": 4
+  },
+  "七": {
+   "char": "七",
+   "pinyin": "qī",
+   "meaning": "seven",
+   "set": "数字",
+   "unicode": "U+4E03",
+   "strokes": 2
+  },
+  "八": {
+   "char": "八",
+   "pinyin": "bā",
+   "meaning": "eight",
+   "set": "数字",
+   "unicode": "U+516B",
+   "strokes": 2
+  },
+  "九": {
+   "char": "九",
+   "pinyin": "jiǔ",
+   "meaning": "nine",
+   "set": "数字",
+   "unicode": "U+4E5D",
+   "strokes": 2
+  },
+  "十": {
+   "char": "十",
+   "pinyin": "shí",
+   "meaning": "ten",
+   "set": "数字",
+   "unicode": "U+5341",
+   "strokes": 2
+  },
+  "百": {
+   "char": "百",
+   "pinyin": "bǎi",
+   "meaning": "hundred",
+   "set": "数字",
+   "unicode": "U+767E",
+   "strokes": 6
+  },
+  "千": {
+   "char": "千",
+   "pinyin": "qiān",
+   "meaning": "thousand",
+   "set": "数字",
+   "unicode": "U+5343",
+   "strokes": 3
+  },
+  "万": {
+   "char": "万",
+   "pinyin": "wàn",
+   "meaning": "ten-thousand",
+   "set": "数字",
+   "unicode": "U+4E07",
+   "strokes": 3
+  },
+  "亿": {
+   "char": "亿",
+   "pinyin": "yì",
+   "meaning": "hundred-million",
+   "set": "数字",
+   "unicode": "U+4EBF",
+   "strokes": 3
+  },
+  "零": {
+   "char": "零",
+   "pinyin": "líng",
+   "meaning": "zero",
+   "set": "数字",
+   "unicode": "U+96F6",
+   "strokes": 13
+  },
+  "半": {
+   "char": "半",
+   "pinyin": "bàn",
+   "meaning": "half",
+   "set": "数字",
+   "unicode": "U+534A",
+   "strokes": 5
+  },
+  "双": {
+   "char": "双",
+   "pinyin": "shuāng",
+   "meaning": "pair",
+   "set": "数字",
+   "unicode": "U+53CC",
+   "strokes": 4
+  },
+  "两": {
+   "char": "两",
+   "pinyin": "liǎng",
+   "meaning": "two",
+   "set": "数字",
+   "unicode": "U+4E24",
+   "strokes": 7
+  },
+  "人": {
+   "char": "人",
+   "pinyin": "rén",
+   "meaning": "person",
+   "set": "人物身体",
+   "unicode": "U+4EBA",
+   "strokes": 2
+  },
+  "口": {
+   "char": "口",
+   "pinyin": "kǒu",
+   "meaning": "mouth",
+   "set": "人物身体",
+   "unicode": "U+53E3",
+   "strokes": 3
+  },
+  "手": {
+   "char": "手",
+   "pinyin": "shǒu",
+   "meaning": "hand",
+   "set": "人物身体",
+   "unicode": "U+624B",
+   "strokes": 4
+  },
+  "足": {
+   "char": "足",
+   "pinyin": "zú",
+   "meaning": "foot",
+   "set": "人物身体",
+   "unicode": "U+8DB3",
+   "strokes": 7
+  },
+  "目": {
+   "char": "目",
+   "pinyin": "mù",
+   "meaning": "eye",
+   "set": "人物身体",
+   "unicode": "U+76EE",
+   "strokes": 5
+  },
+  "耳": {
+   "char": "耳",
+   "pinyin": "ěr",
+   "meaning": "ear",
+   "set": "人物身体",
+   "unicode": "U+8033",
+   "strokes": 6
+  },
+  "心": {
+   "char": "心",
+   "pinyin": "xīn",
+   "meaning": "heart",
+   "set": "人物身体",
+   "unicode": "U+5FC3",
+   "strokes": 4
+  },
+  "身": {
+   "char": "身",
+   "pinyin": "shēn",
+   "meaning": "body",
+   "set": "人物身体",
+   "unicode": "U+8EAB",
+   "strokes": 7
+  },
+  "子": {
+   "char": "子",
+   "pinyin": "zǐ",
+   "meaning": "child",
+   "set": "人物身体",
+   "unicode": "U+5B50",
+   "strokes": 3
+  },
+  "女": {
+   "char": "女",
+   "pinyin": "nǚ",
+   "meaning": "woman",
+   "set": "人物身体",
+   "unicode": "U+5973",
+   "strokes": 3
+  },
+  "男": {
+   "char": "男",
+   "pinyin": "nán",
+   "meaning": "man",
+   "set": "人物身体",
+   "unicode": "U+7537",
+   "strokes": 7
+  },
+  "老": {
+   "char": "老",
+   "pinyin": "lǎo",
+   "meaning": "old",
+   "set": "人物身体",
+   "unicode": "U+8001",
+   "strokes": 6
+  },
+  "少": {
+   "char": "少",
+   "pinyin": "shào",
+   "meaning": "young",
+   "set": "人物身体",
+   "unicode": "U+5C11",
+   "strokes": 4
+  },
+  "父": {
+   "char": "父",
+   "pinyin": "fù",
+   "meaning": "father",
+   "set": "人物身体",
+   "unicode": "U+7236",
+   "strokes": 4
+  },
+  "母": {
+   "char": "母",
+   "pinyin": "mǔ",
+   "meaning": "mother",
+   "set": "人物身体",
+   "unicode": "U+6BCD",
+   "strokes": 5
+  },
+  "兄": {
+   "char": "兄",
+   "pinyin": "xiōng",
+   "meaning": "elder brother",
+   "set": "人物身体",
+   "unicode": "U+5144",
+   "strokes": 5
+  },
+  "弟": {
+   "char": "弟",
+   "pinyin": "dì",
+   "meaning": "younger brother",
+   "set": "人物身体",
+   "unicode": "U+5F1F",
+   "strokes": 7
+  },
+  "友": {
+   "char": "友",
+   "pinyin": "yǒu",
+   "meaning": "friend",
+   "set": "人物身体",
+   "unicode": "U+53CB",
+   "strokes": 4
+  },
+  "君": {
+   "char": "君",
+   "pinyin": "jūn",
+   "meaning": "lord",
+   "set": "人物身体",
+   "unicode": "U+541B",
+   "strokes": 7
+  },
+  "臣": {
+   "char": "臣",
+   "pinyin": "chén",
+   "meaning": "subject",
+   "set": "人物身体",
+   "unicode": "U+81E3",
+   "strokes": 6
+  },
+  "马": {
+   "char": "马",
+   "pinyin": "mǎ",
+   "meaning": "horse",
+   "set": "动物",
+   "unicode": "U+9A6C",
+   "strokes": 3
+  },
+  "牛": {
+   "char": "牛",
+   "pinyin": "niú",
+   "meaning": "ox",
+   "set": "动物",
+   "unicode": "U+725B",
+   "strokes": 4
+  },
+  "羊": {
+   "char": "羊",
+   "pinyin": "yáng",
+   "meaning": "sheep",
+   "set": "动物",
+   "unicode": "U+7F8A",
+   "strokes": 6
+  },
+  "鱼": {
+   "char": "鱼",
+   "pinyin": "yú",
+   "meaning": "fish",
+   "set": "动物",
+   "unicode": "U+9C7C",
+   "strokes": 8
+  },
+  "鸟": {
+   "char": "鸟",
+   "pinyin": "niǎo",
+   "meaning": "bird",
+   "set": "动物",
+   "unicode": "U+9E1F",
+   "strokes": 5
+  },
+  "虫": {
+   "char": "虫",
+   "pinyin": "chóng",
+   "meaning": "insect",
+   "set": "动物",
+   "unicode": "U+866B",
+   "strokes": 6
+  },
+  "虎": {
+   "char": "虎",
+   "pinyin": "hǔ",
+   "meaning": "tiger",
+   "set": "动物",
+   "unicode": "U+864E",
+   "strokes": 8
+  },
+  "龙": {
+   "char": "龙",
+   "pinyin": "lóng",
+   "meaning": "dragon",
+   "set": "动物",
+   "unicode": "U+9F99",
+   "strokes": 5
+  },
+  "蛇": {
+   "char": "蛇",
+   "pinyin": "shé",
+   "meaning": "snake",
+   "set": "动物",
+   "unicode": "U+86C7",
+   "strokes": 11
+  },
+  "兔": {
+   "char": "兔",
+   "pinyin": "tù",
+   "meaning": "rabbit",
+   "set": "动物",
+   "unicode": "U+5154",
+   "strokes": 8
+  },
+  "犬": {
+   "char": "犬",
+   "pinyin": "quǎn",
+   "meaning": "dog",
+   "set": "动物",
+   "unicode": "U+72AC",
+   "strokes": 4
+  },
+  "鹿": {
+   "char": "鹿",
+   "pinyin": "lù",
+   "meaning": "deer",
+   "set": "动物",
+   "unicode": "U+9E7F",
+   "strokes": 11
+  },
+  "象": {
+   "char": "象",
+   "pinyin": "xiàng",
+   "meaning": "elephant",
+   "set": "动物",
+   "unicode": "U+8C61",
+   "strokes": 11
+  },
+  "龟": {
+   "char": "龟",
+   "pinyin": "guī",
+   "meaning": "turtle",
+   "set": "动物",
+   "unicode": "U+9F9F",
+   "strokes": 7
+  },
+  "燕": {
+   "char": "燕",
+   "pinyin": "yàn",
+   "meaning": "swallow",
+   "set": "动物",
+   "unicode": "U+71D5",
+   "strokes": 16
+  },
+  "凤": {
+   "char": "凤",
+   "pinyin": "fèng",
+   "meaning": "phoenix",
+   "set": "动物",
+   "unicode": "U+51E4",
+   "strokes": 4
+  },
+  "鹏": {
+   "char": "鹏",
+   "pinyin": "péng",
+   "meaning": "roc",
+   "set": "动物",
+   "unicode": "U+9E4F",
+   "strokes": 13
+  },
+  "米": {
+   "char": "米",
+   "pinyin": "mǐ",
+   "meaning": "rice",
+   "set": "食物",
+   "unicode": "U+7C73",
+   "strokes": 6
+  },
+  "面": {
+   "char": "面",
+   "pinyin": "miàn",
+   "meaning": "noodle / flour",
+   "set": "食物",
+   "unicode": "U+9762",
+   "strokes": 9
+  },
+  "茶": {
+   "char": "茶",
+   "pinyin": "chá",
+   "meaning": "tea",
+   "set": "食物",
+   "unicode": "U+8336",
+   "strokes": 9
+  },
+  "酒": {
+   "char": "酒",
+   "pinyin": "jiǔ",
+   "meaning": "wine",
+   "set": "食物",
+   "unicode": "U+9152",
+   "strokes": 10
+  },
+  "盐": {
+   "char": "盐",
+   "pinyin": "yán",
+   "meaning": "salt",
+   "set": "食物",
+   "unicode": "U+76D0",
+   "strokes": 10
+  },
+  "糖": {
+   "char": "糖",
+   "pinyin": "táng",
+   "meaning": "sugar",
+   "set": "食物",
+   "unicode": "U+7CD6",
+   "strokes": 16
+  },
+  "果": {
+   "char": "果",
+   "pinyin": "guǒ",
+   "meaning": "fruit",
+   "set": "食物",
+   "unicode": "U+679C",
+   "strokes": 8
+  },
+  "菜": {
+   "char": "菜",
+   "pinyin": "cài",
+   "meaning": "vegetable",
+   "set": "食物",
+   "unicode": "U+83DC",
+   "strokes": 11
+  },
+  "肉": {
+   "char": "肉",
+   "pinyin": "ròu",
+   "meaning": "meat",
+   "set": "食物",
+   "unicode": "U+8089",
+   "strokes": 6
+  },
+  "饼": {
+   "char": "饼",
+   "pinyin": "bǐng",
+   "meaning": "cake / biscuit",
+   "set": "食物",
+   "unicode": "U+997C",
+   "strokes": 9
+  },
+  "粥": {
+   "char": "粥",
+   "pinyin": "zhōu",
+   "meaning": "congee",
+   "set": "食物",
+   "unicode": "U+7CA5",
+   "strokes": 12
+  },
+  "羹": {
+   "char": "羹",
+   "pinyin": "gēng",
+   "meaning": "soup",
+   "set": "食物",
+   "unicode": "U+7FB9",
+   "strokes": 19
+  },
+  "饭": {
+   "char": "饭",
+   "pinyin": "fàn",
+   "meaning": "meal",
+   "set": "食物",
+   "unicode": "U+996D",
+   "strokes": 7
+  },
+  "豆": {
+   "char": "豆",
+   "pinyin": "dòu",
+   "meaning": "bean",
+   "set": "食物",
+   "unicode": "U+8C46",
+   "strokes": 7
+  },
+  "瓜": {
+   "char": "瓜",
+   "pinyin": "guā",
+   "meaning": "melon",
+   "set": "食物",
+   "unicode": "U+74DC",
+   "strokes": 5
+  },
+  "蜜": {
+   "char": "蜜",
+   "pinyin": "mì",
+   "meaning": "honey",
+   "set": "食物",
+   "unicode": "U+871C",
+   "strokes": 14
+  },
+  "东": {
+   "char": "东",
+   "pinyin": "dōng",
+   "meaning": "east",
+   "set": "方位",
+   "unicode": "U+4E1C",
+   "strokes": 5
+  },
+  "南": {
+   "char": "南",
+   "pinyin": "nán",
+   "meaning": "south",
+   "set": "方位",
+   "unicode": "U+5357",
+   "strokes": 9
+  },
+  "西": {
+   "char": "西",
+   "pinyin": "xī",
+   "meaning": "west",
+   "set": "方位",
+   "unicode": "U+897F",
+   "strokes": 6
+  },
+  "北": {
+   "char": "北",
+   "pinyin": "běi",
+   "meaning": "north",
+   "set": "方位",
+   "unicode": "U+5317",
+   "strokes": 5
+  },
+  "上": {
+   "char": "上",
+   "pinyin": "shàng",
+   "meaning": "up",
+   "set": "方位",
+   "unicode": "U+4E0A",
+   "strokes": 3
+  },
+  "下": {
+   "char": "下",
+   "pinyin": "xià",
+   "meaning": "down",
+   "set": "方位",
+   "unicode": "U+4E0B",
+   "strokes": 3
+  },
+  "左": {
+   "char": "左",
+   "pinyin": "zuǒ",
+   "meaning": "left",
+   "set": "方位",
+   "unicode": "U+5DE6",
+   "strokes": 5
+  },
+  "右": {
+   "char": "右",
+   "pinyin": "yòu",
+   "meaning": "right",
+   "set": "方位",
+   "unicode": "U+53F3",
+   "strokes": 5
+  },
+  "中": {
+   "char": "中",
+   "pinyin": "zhōng",
+   "meaning": "center",
+   "set": "方位",
+   "unicode": "U+4E2D",
+   "strokes": 4
+  },
+  "内": {
+   "char": "内",
+   "pinyin": "nèi",
+   "meaning": "inside",
+   "set": "方位",
+   "unicode": "U+5185",
+   "strokes": 4
+  },
+  "外": {
+   "char": "外",
+   "pinyin": "wài",
+   "meaning": "outside",
+   "set": "方位",
+   "unicode": "U+5916",
+   "strokes": 5
+  },
+  "前": {
+   "char": "前",
+   "pinyin": "qián",
+   "meaning": "front",
+   "set": "方位",
+   "unicode": "U+524D",
+   "strokes": 9
+  },
+  "后": {
+   "char": "后",
+   "pinyin": "hòu",
+   "meaning": "back",
+   "set": "方位",
+   "unicode": "U+540E",
+   "strokes": 6
+  },
+  "旁": {
+   "char": "旁",
+   "pinyin": "páng",
+   "meaning": "beside",
+   "set": "方位",
+   "unicode": "U+65C1",
+   "strokes": 10
+  },
+  "侧": {
+   "char": "侧",
+   "pinyin": "cè",
+   "meaning": "side",
+   "set": "方位",
+   "unicode": "U+4FA7",
+   "strokes": 8
+  },
+  "年": {
+   "char": "年",
+   "pinyin": "nián",
+   "meaning": "year",
+   "set": "时间",
+   "unicode": "U+5E74",
+   "strokes": 6
+  },
+  "时": {
+   "char": "时",
+   "pinyin": "shí",
+   "meaning": "hour",
+   "set": "时间",
+   "unicode": "U+65F6",
+   "strokes": 7
+  },
+  "分": {
+   "char": "分",
+   "pinyin": "fēn",
+   "meaning": "minute",
+   "set": "时间",
+   "unicode": "U+5206",
+   "strokes": 4
+  },
+  "秒": {
+   "char": "秒",
+   "pinyin": "miǎo",
+   "meaning": "second",
+   "set": "时间",
+   "unicode": "U+79D2",
+   "strokes": 9
+  },
+  "春": {
+   "char": "春",
+   "pinyin": "chūn",
+   "meaning": "spring",
+   "set": "时间",
+   "unicode": "U+6625",
+   "strokes": 9
+  },
+  "夏": {
+   "char": "夏",
+   "pinyin": "xià",
+   "meaning": "summer",
+   "set": "时间",
+   "unicode": "U+590F",
+   "strokes": 10
+  },
+  "秋": {
+   "char": "秋",
+   "pinyin": "qiū",
+   "meaning": "autumn",
+   "set": "时间",
+   "unicode": "U+79CB",
+   "strokes": 9
+  },
+  "冬": {
+   "char": "冬",
+   "pinyin": "dōng",
+   "meaning": "winter",
+   "set": "时间",
+   "unicode": "U+51AC",
+   "strokes": 5
+  },
+  "朝": {
+   "char": "朝",
+   "pinyin": "zhāo",
+   "meaning": "morning",
+   "set": "时间",
+   "unicode": "U+671D",
+   "strokes": 12
+  },
+  "夕": {
+   "char": "夕",
+   "pinyin": "xī",
+   "meaning": "dusk",
+   "set": "时间",
+   "unicode": "U+5915",
+   "strokes": 3
+  },
+  "晨": {
+   "char": "晨",
+   "pinyin": "chén",
+   "meaning": "dawn",
+   "set": "时间",
+   "unicode": "U+6668",
+   "strokes": 11
+  },
+  "暮": {
+   "char": "暮",
+   "pinyin": "mù",
+   "meaning": "dusk",
+   "set": "时间",
+   "unicode": "U+66AE",
+   "strokes": 14
+  },
+  "古": {
+   "char": "古",
+   "pinyin": "gǔ",
+   "meaning": "ancient",
+   "set": "时间",
+   "unicode": "U+53E4",
+   "strokes": 5
+  },
+  "今": {
+   "char": "今",
+   "pinyin": "jīn",
+   "meaning": "now",
+   "set": "时间",
+   "unicode": "U+4ECA",
+   "strokes": 4
+  },
+  "早": {
+   "char": "早",
+   "pinyin": "zǎo",
+   "meaning": "early",
+   "set": "时间",
+   "unicode": "U+65E9",
+   "strokes": 6
+  },
+  "晚": {
+   "char": "晚",
+   "pinyin": "wǎn",
+   "meaning": "late",
+   "set": "时间",
+   "unicode": "U+665A",
+   "strokes": 11
+  }
+ }
+}

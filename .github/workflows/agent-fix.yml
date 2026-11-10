@@ -1,0 +1,103 @@
+name: 字形纠错 · Agent 自动修复
+
+# 触发方式：
+#   1) 有人新建/打上「字形纠错」标签的 issue → agent 读取反馈、重画、校验、回帖、开 PR
+#   2) 手动在 Actions 页运行（workflow_dispatch），填汉字 + 问题描述
+# 前提：在仓库 Settings → Labels 里先创建 `字形纠错` 这个标签。
+on:
+  issues:
+    types: [opened, labeled, reopened]
+  workflow_dispatch:
+    inputs:
+      char:
+        description: 要修正的汉字（单字，需在字库内）
+        required: true
+        type: string
+      issue:
+        description: 问题描述（可含方向词，如「第一笔上移」）
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: glyph-fix-${{ github.event.issue.number || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  agent-fix:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.issue.labels.*.name, '字形纠错')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # 接真实 AI 生成器：在 env 里注入密钥，并把下面的命令改成
+      #   python3 agent_fix.py --strategy hook --hook-cmd "python3 my_ai.py" ...
+      # my_ai.py 从 stdin 读 {char, issue, current}，stdout 输出 {strokes, medians, note, source}。
+      - name: Agent 生成候选 + 硬校验
+        id: agent
+        env:
+          ISSUE_JSON: ${{ toJSON(github.event) }}
+          IN_CHAR: ${{ inputs.char }}
+          IN_ISSUE: ${{ inputs.issue }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            python3 agent_fix.py --char "$IN_CHAR" --issue "$IN_ISSUE" \
+              --author "agent-bot" --out /tmp/result.json --comment-file /tmp/comment.md
+            code=$?
+          else
+            printf '%s' "$ISSUE_JSON" > /tmp/issue.json
+            python3 agent_fix.py --issue-json /tmp/issue.json \
+              --author "agent-bot" --out /tmp/result.json --comment-file /tmp/comment.md
+            code=$?
+          fi
+          echo "agent exit code: $code"
+          # 0=成功；3=结构硬校验未通过但候选已入队（仍开 PR 让人工看失败原因）；其余=异常，中断
+          if [ "$code" -ne 0 ] && [ "$code" -ne 3 ]; then
+            echo "agent 引擎异常退出: $code"; exit "$code"
+          fi
+          echo "---- 校验报告 ----"
+          cat /tmp/comment.md
+
+      - name: 把校验报告回帖到 issue
+        if: github.event_name == 'issues'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('/tmp/comment.md', 'utf8');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });
+
+      - name: 把待审候选自动开成 PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "agent 字形候选（${{ github.event_name == 'issues' && format('issue #{0}', github.event.issue.number) || '手动触发' }}）"
+          branch: agent-fix/${{ github.event_name == 'issues' && format('issue-{0}', github.event.issue.number) || github.run_id }}
+          delete-branch: true
+          title: "[Agent] 字形重画候选 · ${{ github.event_name == 'issues' && format('issue #{0}', github.event.issue.number) || github.run_id }}"
+          body-path: /tmp/comment.md
+          # 只提交闭环数据，避免把 __pycache__ 等带进 PR
+          add-paths: |
+            hanzi-revisions.json
+            hanzi-reports.json
+
+      - name: 汇总
+        run: |
+          echo "候选报告已回帖 / PR 已创建。"
+          echo "下一步：在 hanzi-review.html 并排审阅，采纳后运行 python3 build_hanzi_mcp.py 同步前端。"

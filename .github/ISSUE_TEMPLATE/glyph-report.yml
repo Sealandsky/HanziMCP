@@ -1,0 +1,48 @@
+name: 字形纠错
+description: 反馈某个汉字的笔顺/笔画/字形问题。agent 会自动重画并提交候选 PR 供人工审阅。
+title: "[字形] "
+labels: ["字形纠错"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        谢谢反馈！提交后请确认 issue 带有 `字形纠错` 标签（首次使用需在仓库 Labels 里创建它）。
+        agent 会自动读取本 issue → 生成重画候选 → 跑硬校验 → 把报告回帖到这里 → 开一个 PR。
+        **agent 无权直接修改正式字库**，最终由人工在审阅页并排对比后采纳。
+
+  - type: input
+    id: char
+    attributes:
+      label: 出问题的汉字
+      description: 只填一个已经在字库里的汉字
+      placeholder: 天
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue
+    attributes:
+      label: 问题描述
+      description: |
+        例：第一笔应是横不是横撇。
+
+        可写方向词（上移/下移/左移/右移/拉长/缩短），默认的 agent nudge 生成器会据此做安全微调；
+        若要提交精确笔画数据，请用 `--strategy file` 或 `--strategy hook` 接你自己的 AI 生成器。
+      placeholder: 第一笔应是横不是横撇，略微上移
+    validations:
+      required: true
+
+  - type: dropdown
+    id: strategy
+    attributes:
+      label: 候选生成方式（高级，可留默认）
+      options:
+        - agent 安全微调（默认，确定性、可复现）
+        - 我会另外提供精确笔画数据
+      default: 0
+
+  - type: markdown
+    attributes:
+      value: |
+        > 提示：位置/长短问题用默认微调即可；「横撇改横」这类**形状**问题需要接真实生成器
+        > （`python3 agent_fix.py --strategy file --candidate-json ...` 或 `--strategy hook`）。

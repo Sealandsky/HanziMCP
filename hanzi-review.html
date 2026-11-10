@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>汉字修订审阅 · 人工裁决台</title>
+<style>
+  :root{
+    --canvas:#fbfbfb; --surface:#fff; --ink:#18181b; --muted:#6b7280;
+    --line:rgba(0,0,0,.1); --hover:rgba(0,0,0,.04); --accent:#2d68ff;
+    --ok:#0f9d58; --warn:#b45309; --err:#dc2626;
+    --okbg:#ecfdf3; --warnbg:#fffbeb; --errbg:#fef2f2;
+    --radius:14px; --font:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  }
+  :root[data-theme="dark"]{
+    --canvas:#0a0a0b; --surface:#17171a; --ink:#f4f4f5; --muted:#a1a1aa;
+    --line:rgba(255,255,255,.12); --hover:rgba(255,255,255,.06); --accent:#5b8bff;
+    --okbg:#052e1b; --warnbg:#2b1e05; --errbg:#2b0d0d;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--canvas);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.6;letter-spacing:-.01em}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 24px 80px}
+  .head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:8px}
+  h1{font-size:22px;font-weight:600;margin:0;letter-spacing:-.03em}
+  .sub{color:var(--muted);font-size:13px;margin-top:4px}
+  .tools{display:flex;gap:8px;align-items:center}
+  button{font-family:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:8px 14px;font-size:13px;font-weight:500;transition:.15s}
+  button:hover{background:var(--hover)}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  button.danger{color:var(--err);border-color:color-mix(in srgb,var(--err) 40%,transparent)}
+  button.danger:hover{background:var(--errbg)}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  .conn{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--muted)}
+  .dot.on{background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 20%,transparent)}
+  .dot.off{background:var(--err)}
+  .banner{margin:18px 0;padding:12px 16px;border-radius:10px;background:var(--warnbg);border:1px solid color-mix(in srgb,var(--warn) 25%,transparent);color:var(--warn);font-size:13px}
+  .section-h{font-size:13px;color:var(--muted);font-weight:600;margin:28px 0 12px;display:flex;align-items:center;gap:8px}
+  .section-h .n{background:var(--hover);border-radius:6px;padding:1px 7px;font-variant-numeric:tabular-nums}
+  .rev{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);padding:18px;margin-bottom:16px}
+  .rev-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+  .rev-id{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--muted)}
+  .rev-ch{font-size:16px;font-weight:600}
+  .badge{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 9px;border-radius:999px;margin-left:8px}
+  .badge.ai{background:var(--errbg);color:var(--err)}
+  .badge.manual{background:var(--hover);color:var(--muted)}
+  .badge.arphic{background:var(--okbg);color:var(--ok)}
+  .meta{font-size:12.5px;color:var(--muted);margin-top:3px}
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .pane{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--canvas)}
+  .pane .lbl{font-size:11.5px;color:var(--muted);padding:7px 12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+  .pane .stage{aspect-ratio:1;display:flex;align-items:center;justify-content:center;position:relative}
+  .pane .stage svg{width:74%;height:74%;color:var(--ink)}
+  .pane.cand .stage{background:color-mix(in srgb,var(--accent) 5%,transparent)}
+  .replay{font-size:11px;padding:3px 8px;border:1px solid var(--line);border-radius:7px;background:var(--surface)}
+  .report{margin-top:14px;border-radius:10px;padding:12px 14px;font-size:12.5px}
+  .report.pass{background:var(--okbg);color:var(--ok)}
+  .report.fail{background:var(--errbg);color:var(--err)}
+  .report .row{margin-top:5px}
+  .report ul{margin:5px 0 0;padding-left:18px}
+  .report li{margin:2px 0}
+  .sim{display:inline-block;background:var(--errbg);color:var(--err);border-radius:6px;padding:1px 8px;margin:2px 4px 0 0;font-size:12px}
+  .actions{display:flex;gap:10px;margin-top:16px;align-items:center;flex-wrap:wrap}
+  .reason{flex:1;min-width:180px}
+  .reason input{width:100%;font-family:inherit;font-size:12.5px;padding:8px 11px;border-radius:9px;border:1px solid var(--line);background:var(--canvas);color:var(--ink)}
+  .gate{font-size:12px;color:var(--muted);margin-left:auto}
+  .gate.blocked{color:var(--err)}
+  .empty{text-align:center;color:var(--muted);padding:48px 16px;border:1px dashed var(--line);border-radius:var(--radius)}
+  .list{font-size:12.5px}
+  .list .item{padding:8px 0;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:baseline}
+  .list .item:last-child{border-bottom:none}
+  .list .c{font-size:15px;font-weight:600;min-width:20px}
+  .list .muted{color:var(--muted)}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--hover);padding:1px 5px;border-radius:4px;font-size:11.5px}
+  .foot{margin-top:40px;color:var(--muted);font-size:12px}
+  @media(max-width:680px){.compare{grid-template-columns:1fr}.head{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div>
+      <h1>汉字修订审阅</h1>
+      <div class="sub">人工裁决台 · agent 只上报与重画，采纳权在此</div>
+    </div>
+    <div class="tools">
+      <span class="conn" id="conn"><span class="dot" id="cdot"></span><span id="ctxt">连接中…</span></span>
+      <button id="theme" title="切换主题">主题</button>
+      <button id="refresh">刷新</button>
+    </div>
+  </div>
+
+  <div class="banner">
+    闭环分工：<b>agent</b> 通过 MCP <code>report_hanzi</code> / <code>fix_hanzi</code> 提交候选并自动硬校验 →
+    <b>在本页</b>并排核对当前字形与候选、看清校验报告 → 由你点「采纳」才写回正式字库（记贡献者署名），或「驳回」。
+    结构校验通过 ≠ 可发布，笔顺与字形仍以你的眼睛为准。
+  </div>
+
+  <div id="body"></div>
+
+  <div class="foot" id="foot"></div>
+</div>
+
+<script>
+// ---- 与 server 通信 ----
+const ORIGIN = location.origin.startsWith("http") ? location.origin : "http://127.0.0.1:8787";
+let clipSeq = 0;   // SVG clip id 文档全局，必须唯一
+
+// ---- 与主站 hanzi-mcp.html 完全相同的字形渲染几何（静态终帧）----
+function renderGlyph(svg, d){
+  let xmin=1e9,xmax=-1e9,ymin=1e9,ymax=-1e9;
+  (d.strokes||[]).forEach(s=>{
+    const n=s.match(/-?\d+\.?\d*/g)||[];
+    for(let i=0;i+1<n.length;i+=2){const x=+n[i],y=+n[i+1];
+      xmin=Math.min(xmin,x);xmax=Math.max(xmax,x);ymin=Math.min(ymin,y);ymax=Math.max(ymax,y);}
+  });
+  (d.medians||[]).forEach(m=>m.forEach(p=>{
+    xmin=Math.min(xmin,p[0]);xmax=Math.max(xmax,p[0]);ymin=Math.min(ymin,p[1]);ymax=Math.max(ymax,p[1]);}));
+  if(!(d.strokes||[]).length){svg.innerHTML='';return [];}
+  const margin=72, span=Math.max(xmax-xmin,ymax-ymin)||1, sc=(1024-2*margin)/span;
+  const cx=(xmin+xmax)/2, cy=(ymin+ymax)/2;
+  const tx=512-sc*cx, ty=512+sc*cy, sw=Math.min(150,span*0.16);
+  if(!isFinite(sc)||!isFinite(tx)||!isFinite(ty)||!isFinite(sw)) throw new Error("bad geometry");
+  let defs="",body="";
+  (d.strokes||[]).forEach((sd,i)=>{
+    const pid=clipSeq++;
+    const med=(d.medians[i]||[]).map(p=>p[0]+" "+p[1]).join(" L ");
+    defs+=`<clipPath id="clip${pid}"><path d="${sd}"/></clipPath>`;
+    body+=`<g clip-path="url(#clip${pid})"><path class="ink" d="M ${med}" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"/></g>`;
+  });
+  svg.innerHTML=`<g transform="translate(${tx.toFixed(2)},${ty.toFixed(2)}) scale(${sc.toFixed(4)},${(-sc).toFixed(4)})"><defs>${defs}</defs>${body}</g>`;
+  return [...svg.querySelectorAll(".ink")];
+}
+function play(svg,d){
+  const els=renderGlyph(svg,d);
+  let delay=0;
+  els.forEach(p=>{
+    const len=p.getTotalLength();
+    p.style.strokeDasharray=len; p.style.strokeDashoffset=len;
+    p.animate([{strokeDashoffset:len},{strokeDashoffset:0}],{duration:380,delay:delay,easing:"ease-in-out",fill:"forwards"});
+    delay+=380;
+  });
+}
+function glyphBox(d,label,tag,replay){
+  const st=`<div class="pane ${tag?'cand':''}">
+    <div class="lbl"><span>${label}</span>${replay?'<button class="replay" data-replay>重播笔顺</button>':''}</div>
+    <div class="stage"><svg viewBox="0 0 1024 1024" preserveAspectRatio="xMidYMid meet"></svg></div>
+  </div>`;
+  const wrap=document.createElement('div'); wrap.innerHTML=st;
+  const svg=wrap.querySelector('svg');
+  renderGlyph(svg,d);
+  const rb=wrap.querySelector('[data-replay]');
+  if(rb) rb.onclick=()=>play(svg,d);
+  return wrap;
+}
+function esc(s){return (s==null?"":String(s)).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+function reportHTML(v){
+  if(!v) return '<div class="report">尚无校验报告</div>';
+  const cls=v.ok?'pass':'fail';
+  const head=`硬校验：<b>${v.ok?'结构通过':'结构未通过'}</b> · ${v.strokeCount} 笔${v.diff&&v.diff.refStrokeCount!=null?' · 现版本 '+v.diff.refStrokeCount+' 笔':''}`;
+  let html=`<div class="report ${cls}"><div>${head}</div>`;
+  if(v.errors&&v.errors.length) html+=`<div class="row"><b>错误（阻断采纳）</b><ul>${v.errors.map(e=>'<li>'+esc(e)+'</li>').join('')}</ul></div>`;
+  if(v.warnings&&v.warnings.length) html+=`<div class="row"><b>注意（须人工核对）</b><ul>${v.warnings.map(w=>'<li>'+esc(w)+'</li>').join('')}</ul></div>`;
+  if(v.similarInLibrary&&v.similarInLibrary.length)
+    html+=`<div class="row">库内相似：${v.similarInLibrary.map(s=>`<span class="sim">${esc(s.char)} ${Math.round(s.iou*100)}%</span>`).join('')}</div>`;
+  html+='</div>';
+  return html;
+}
+
+function revCard(r){
+  const el=document.createElement('div'); el.className='rev';
+  const srcCls = r.source==='ai-generated'?'ai':(r.source==='arphic-reextract'?'arphic':'manual');
+  const srcTxt = r.source==='ai-generated'?'AI 生成':(r.source==='arphic-reextract'?'原字体重提':'人工微调');
+  const info=r.info?`${esc(r.info.pinyin)} · ${esc(r.info.meaning)}`:'';
+  const when=new Date(r.ts*1000).toLocaleString('zh-CN',{hour12:false});
+  el.innerHTML=`<div class="rev-head">
+      <div>
+        <div><span class="rev-ch">${esc(r.char)}</span><span class="badge ${srcCls}">${srcTxt}</span></div>
+        <div class="meta">${info} · 提交者 ${esc(r.author)} · ${when}</div>
+        <div class="rev-id">${esc(r.id)}</div>
+      </div>
+      <div class="meta" style="text-align:right;max-width:340px">${esc(r.note||'（无改动说明）')}</div>
+    </div>
+    <div class="compare"></div>
+    <div class="rpt"></div>
+    <div class="actions">
+      <button class="primary" data-accept>采纳并写回</button>
+      <button class="danger" data-reject>驳回</button>
+      <input class="reason" data-reason placeholder="驳回理由（可选）">
+      <span class="gate"></span>
+    </div>`;
+  const cmp=el.querySelector('.compare');
+  cmp.appendChild(glyphBox(r.current||{strokes:[],medians:[]},'当前正式字形',false,false));
+  cmp.appendChild(glyphBox({strokes:r.strokes,medians:r.medians},'候选字形',true,true));
+  el.querySelector('.rpt').innerHTML=reportHTML(r.validation);
+
+  const gate=el.querySelector('.gate');
+  const canAuto=r.validation&&r.validation.ok&&!(r.validation.similarInLibrary||[]).length;
+  gate.textContent = canAuto?'结构校验通过 · 仍须你确认笔顺':'存在告警/错误 · 请重点核对';
+  gate.className='gate'+(canAuto?'':' blocked');
+
+  const busy=msg=>{el.querySelectorAll('button').forEach(b=>b.disabled=true);gate.textContent=msg;};
+  el.querySelector('[data-accept]').onclick=async()=>{
+    if(!(r.validation&&r.validation.ok)) {alert('硬校验未通过，无法采纳。请先驳回或让提交者修正。');return;}
+    if(!confirm(`确认采纳「${r.char}」这个候选并写回正式字库？\n该操作会记入贡献者署名。`)) return;
+    busy('正在写回…');
+    try{
+      const res=await fetch(ORIGIN+'/review/accept',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:r.id})});
+      const j=await res.json();
+      if(j.error) throw new Error(j.error);
+      alert(`已采纳：${j.char} · ${j.strokeCount} 笔\n署名 ${j.author}\n\nMCP 的 hanzi_paths 已返回新字形。`);
+      load();
+    }catch(e){alert('采纳失败：'+e.message);load();}
+  };
+  el.querySelector('[data-reject]').onclick=async()=>{
+    const reason=el.querySelector('[data-reason]').value.trim();
+    busy('正在驳回…');
+    try{
+      const res=await fetch(ORIGIN+'/review/reject',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:r.id,reason})});
+      const j=await res.json();
+      if(j.error) throw new Error(j.error);
+      load();
+    }catch(e){alert('驳回失败：'+e.message);load();}
+  };
+  return el;
+}
+
+function listBlock(title,items,render){
+  const h=document.createElement('div'); h.className='section-h';
+  h.innerHTML=`${title} <span class="n">${items.length}</span>`;
+  const box=document.createElement('div'); box.className='list';
+  if(!items.length){const e=document.createElement('div');e.className='muted';e.textContent='（暂无）';box.appendChild(e);}
+  else items.forEach(it=>box.appendChild(render(it)));
+  return [h,box];
+}
+
+async function load(){
+  const body=document.getElementById('body');
+  try{
+    const res=await fetch(ORIGIN+'/reviews',{cache:'no-store'});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    document.getElementById('cdot').className='dot on';
+    document.getElementById('ctxt').textContent='已连接 · 待审 '+data.pending.length;
+    body.innerHTML='';
+    const h=document.createElement('div'); h.className='section-h';
+    h.innerHTML=`待审候选 <span class="n">${data.pending.length}</span>`; body.appendChild(h);
+    if(!data.pending.length){
+      const e=document.createElement('div');e.className='empty';
+      e.innerHTML='暂无待审候选。<br>让 agent 通过 MCP 的 <code>fix_hanzi</code> 提交重画候选，它们会出现在这里。';
+      body.appendChild(e);
+    } else data.pending.forEach(r=>body.appendChild(revCard(r)));
+
+    listBlock('待处理反馈',data.reports,r=>{
+      const d=document.createElement('div');d.className='item';
+      d.innerHTML=`<span class="c">${esc(r.char)}</span><span>${esc(r.issue)}</span><span class="muted" style="margin-left:auto">${esc(r.reporter)}</span>`;
+      return d;
+    }).forEach(n=>body.appendChild(n));
+
+    listBlock('已采纳贡献（署名）',data.contributors,r=>{
+      const d=document.createElement('div');d.className='item';
+      d.innerHTML=`<span class="c">${esc(r.char)}</span><span>${esc(r.author)}</span><span class="muted" style="margin-left:auto">${esc(r.note||'')} · ${new Date(r.ts*1000).toLocaleDateString('zh-CN')}</span>`;
+      return d;
+    }).forEach(n=>body.appendChild(n));
+
+    document.getElementById('foot').textContent=`数据来源 ${ORIGIN}/reviews · 采纳写回 hanzi-strokes.json，前端展示页需重新运行 build_hanzi_mcp.py 同步`;
+  }catch(e){
+    document.getElementById('cdot').className='dot off';
+    document.getElementById('ctxt').textContent='未连接';
+    body.innerHTML=`<div class="empty">无法连接本地 MCP 服务（${esc(ORIGIN)}）。<br><br>
+      请先启动：<code>python3 server.py --http 8787</code><br>然后点右上角「刷新」。</div>`;
+  }
+}
+
+document.getElementById('refresh').onclick=load;
+document.getElementById('theme').onclick=()=>{
+  const cur=document.documentElement.getAttribute('data-theme')||'light';
+  const next=cur==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',next);
+  try{localStorage.setItem('iconus-theme',next)}catch(e){}
+};
+(function(){
+  let t; try{t=localStorage.getItem('iconus-theme')}catch(e){}
+  if(!t) t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+  document.documentElement.setAttribute('data-theme',t);
+})();
+load();
+</script>
+</body>
+</html>
