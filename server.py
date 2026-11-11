@@ -503,6 +503,20 @@ class MCPHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def _serve_html(self, filename):
+        """同源托管单文件页面（主站 / 审阅台），避免 file:// 打开时的跨域限制。"""
+        p = os.path.join(HERE, filename)
+        if os.path.exists(p):
+            body = open(p, "rb").read()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self._cors()
+            self.end_headers()
+            self.wfile.write(body)
+        else:
+            self._json({"error": filename + " 缺失"}, 404)
+
     def do_OPTIONS(self):
         self.send_response(204)
         self._cors()
@@ -529,21 +543,13 @@ class MCPHandler(BaseHTTPRequestHandler):
         elif self.path.startswith("/reports"):
             self._json({"reports": load_reports()})
         elif self.path.split("?")[0].rstrip("/") == "/review":
-            # 同源托管人工审阅台（避免 file:// 直接打开时的跨域限制）
-            p = os.path.join(HERE, "hanzi-review.html")
-            if os.path.exists(p):
-                body = open(p, "rb").read()
-                self.send_response(200)
-                self.send_header("Content-Type", "text/html; charset=utf-8")
-                self.send_header("Content-Length", str(len(body)))
-                self._cors()
-                self.end_headers()
-                self.wfile.write(body)
-            else:
-                self._json({"error": "hanzi-review.html 缺失"}, 404)
+            self._serve_html("hanzi-review.html")
+        elif self.path.split("?")[0].rstrip("/") in ("", "/index", "/home", "/hanzi"):
+            # 主站：汉字图标库（单文件自包含）
+            self._serve_html("hanzi-mcp.html")
         else:
-            self._json({"ok": True, "endpoint": "POST /mcp",
-                        "reviewPage": "GET /review",
+            self._json({"ok": True, "site": "GET / （汉字主站）",
+                        "endpoint": "POST /mcp", "reviewPage": "GET /review",
                         "review": "GET /reviews · POST /review/accept|reject", "chars": len(CHARS)})
 
     def do_POST(self):
