@@ -8,6 +8,7 @@
 零第三方依赖，只用标准库。
 """
 import argparse
+import hashlib
 import json
 import os
 import sys
@@ -89,6 +90,81 @@ def load_contributors():
 
 def save_contributors(rows):
     _save_list(CONTRIB_PATH, "contributions", rows)
+
+
+# ---------------------------------------------------------------- 活动区数据
+# 主站右侧活动栏的唯一数据口径：既供 GET /activity 实时返回，也在构建时
+# 生成静态快照内联进 HTML（GitHub Pages 无后端时显示真实数据而非假数字）。
+def _activity_rev():
+    parts = []
+    for path in (DB_PATH, STROKE_PATH, REVIEWS_PATH, REPORTS_PATH, CONTRIB_PATH):
+        try:
+            st = os.stat(path)
+            parts.append("%d:%d" % (st.st_mtime_ns, st.st_size))
+        except OSError:
+            parts.append("0:0")
+    return hashlib.md5("|".join(parts).encode()).hexdigest()[:16]
+
+
+def activity_payload(rev=None):
+    revisions = load_revisions()
+    reports = load_reports()
+    contributors = load_contributors()
+
+    # 以正式字库记录的笔画数为准，不依赖笔画缓存（缓存可能尚未加载）
+    stroke_total = sum(int(CHARS[c].get("strokes") or 0) for c in CHARS)
+    accepted = [r for r in revisions if r.get("status") == "accepted"]
+    rejected = [r for r in revisions if r.get("status") == "rejected"]
+    pending = [r for r in revisions if r.get("status") == "pending"]
+    open_reports = [r for r in reports if r.get("status") == "open"]
+
+    events = []
+    for r in revisions:
+        status = r.get("status")
+        ch = r.get("char") or "?"
+        if status == "accepted":
+            ts = r.get("acceptedTs") or r.get("ts") or 0
+            actor = r.get("author") or "匿名贡献者"
+            act, detail = "已采纳", "候选通过人工审阅，笔画已写回字库"
+        elif status == "rejected":
+            ts = r.get("rejectedTs") or r.get("ts") or 0
+            actor = "人工审阅"
+            act, detail = "驳回了", (r.get("rejectReason") or "候选未通过审阅")
+        else:
+            ts = r.get("ts") or 0
+            actor = r.get("author") or "匿名贡献者"
+            act, detail = "提交候选", (r.get("note") or "等待人工审阅")
+        events.append({"id": r.get("id"), "ts": ts, "kind": status or "pending",
+                       "char": ch, "actor": actor, "act": act, "detail": detail,
+                       "strokes": (r.get("validation") or {}).get("strokeCount")})
+    for r in reports:
+        ch = r.get("char") or "?"
+        issue = r.get("issue") or ""
+        if r.get("status") == "open":
+            events.append({"id": r.get("id"), "ts": r.get("ts") or 0, "kind": "reported",
+                           "char": ch, "actor": r.get("reporter") or "用户",
+                           "act": "反馈了", "detail": issue or "待处理字形问题"})
+        else:
+            events.append({"id": r.get("id"), "ts": r.get("ts") or 0, "kind": "resolved",
+                           "char": ch, "actor": r.get("reporter") or "用户",
+                           "act": "已处理", "detail": issue or "已关联修订"})
+    events.sort(key=lambda e: e.get("ts") or 0, reverse=True)
+
+    pins = [{"name": s.get("name", ""), "count": s.get("count", 0)} for s in SET_META][:4]
+    return {
+        "ok": True,
+        "rev": rev or _activity_rev(),
+        "generatedAt": int(time.time()),
+        "stats": {
+            "chars": len(CHARS), "strokes": stroke_total, "sets": len(SET_META),
+            "revisions": len(revisions), "accepted": len(accepted),
+            "rejected": len(rejected), "pending": len(pending),
+            "reports": len(reports), "openReports": len(open_reports),
+            "contributors": len(contributors),
+        },
+        "pins": pins,
+        "events": events,
+    }
 
 
 def run_validation(char, strokes_in, medians_in, source="manual-fix"):
@@ -490,9 +566,9 @@ def run_stdio():
 class MCPHandler(BaseHTTPRequestHandler):
     def _cors(self):
         self.send_header("Access-Control-Allow-Origin", "*")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type, Mcp-Session-Id")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, Mcp-Session-Id, If-None-Match")
         self.send_header("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
-        self.send_header("Access-Control-Expose-Headers", "Mcp-Session-Id")
+        self.send_header("Access-Control-Expose-Headers", "Mcp-Session-Id, ETag")
 
     def _json(self, obj, code=200):
         body = json.dumps(obj, ensure_ascii=False).encode("utf-8")
@@ -517,6 +593,40 @@ class MCPHandler(BaseHTTPRequestHandler):
         else:
             self._json({"error": filename + " 缺失"}, 404)
 
+    def _serve_icon(self, filename, mime):
+        """静态图标：浏览器默认请求 /favicon.ico 或显式访问 /favicon.svg 时命中。"""
+        p = os.path.join(HERE, filename)
+        if not os.path.exists(p):
+            self._json({"error": filename + " 缺失"}, 404)
+            return
+        body = open(p, "rb").read()
+        self.send_response(200)
+        self.send_header("Content-Type", mime)
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "public, max-age=86400")
+        self._cors()
+        self.end_headers()
+        self.wfile.write(body)
+
+    def _serve_activity(self):
+        rev = _activity_rev()
+        etag = '"%s"' % rev
+        if self.headers.get("If-None-Match") == etag:
+            self.send_response(304)
+            self.send_header("ETag", etag)
+            self._cors()
+            self.end_headers()
+            return
+        raw = json.dumps(activity_payload(rev), ensure_ascii=False).encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(raw)))
+        self.send_header("ETag", etag)
+        self.send_header("Cache-Control", "no-store")
+        self._cors()
+        self.end_headers()
+        self.wfile.write(raw)
+
     def do_OPTIONS(self):
         self.send_response(204)
         self._cors()
@@ -527,6 +637,12 @@ class MCPHandler(BaseHTTPRequestHandler):
             self._json({"ok": True, "server": SERVER_INFO, "chars": len(CHARS),
                         "pendingRevisions": sum(1 for r in load_revisions() if r.get("status") == "pending"),
                         "openReports": sum(1 for r in load_reports() if r.get("status") == "open")})
+        elif self.path.split("?")[0] == "/favicon.ico":
+            self._serve_icon("favicon.ico", "image/x-icon")
+        elif self.path.split("?")[0] == "/favicon.svg":
+            self._serve_icon("favicon.svg", "image/svg+xml")
+        elif self.path.split("?")[0].rstrip("/") == "/activity":
+            self._serve_activity()
         elif self.path.startswith("/sets"):
             self._json({"total": len(CHARS), "sets": SET_META})
         elif self.path.startswith("/reviews"):
@@ -550,7 +666,8 @@ class MCPHandler(BaseHTTPRequestHandler):
         else:
             self._json({"ok": True, "site": "GET / （汉字主站）",
                         "endpoint": "POST /mcp", "reviewPage": "GET /review",
-                        "review": "GET /reviews · POST /review/accept|reject", "chars": len(CHARS)})
+                        "review": "GET /reviews · POST /review/accept|reject",
+                        "activity": "GET /activity", "icon": "GET /favicon.svg | /favicon.ico", "chars": len(CHARS)})
 
     def do_POST(self):
         length = int(self.headers.get("Content-Length") or 0)
